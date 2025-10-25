@@ -1,267 +1,533 @@
 <!doctype html>
 <html lang="es">
+
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Tomoko's page</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&family=Noto+Sans+JP:wght@400;700&family=Shadows+Into+Light&display=swap" rel="stylesheet">
-<style>
-   :root{
-     --bg1:#fff7f8;
-     --bg2:#fff0f3;
-     --accent:#d85b8b;
-     --accent-dark:#b23b66;
-     --muted:#6b6b6b;
-   }
-   html,body{
-     height:100%;
-     margin:0;
-     font-family:"Inter","Noto Sans JP",sans-serif;
-     background: radial-gradient(1200px 600px at 10% 10%, #fff7f8 0%, rgba(255,247,248,0) 30%),
-                 radial-gradient(1000px 500px at 90% 90%, #fff0f3 0%, rgba(255,240,243,0) 30%),
-                 linear-gradient(180deg,#fff 0%,#fffafc 100%);
-     display:flex;
-     align-items:center;
-     justify-content:center;
-     padding:32px;
-     box-sizing:border-box;
-     overflow:hidden;
-   }
-   .card{
-     position:relative;
-     width:100%;
-     max-width:880px;
-     background:linear-gradient(180deg,rgba(255,255,255,0.9),rgba(255,250,251,0.85));
-     border-radius:20px;
-     box-shadow:0 20px 50px rgba(178,59,102,0.12);
-     padding:48px;
-     text-align:center;
-     border:1px solid rgba(210,90,120,0.08);
-     z-index:5;
-   }
-   .corner{
-     position:absolute;
-     width:220px;
-     height:220px;
-     right:-60px;
-     top:-60px;
-     background: radial-gradient(circle at 30% 30%, rgba(216,91,139,0.12), rgba(178,59,102,0.04));
-     transform: rotate(25deg);
-     border-radius: 50% 40% 60% 30%;
-     filter: blur(14px);
-     pointer-events:none;
-   }
-   h1{
-     margin:0 0 8px 0;
-     font-family:"Playfair Display",serif;
-     font-weight:700;
-     font-size:48px;
-     color:var(--accent-dark);
-     line-height:1.05;
-   }
-   .sub{
-     margin:0 0 28px 0;
-     font-size:18px;
-     color:var(--muted);
-   }
-   .question{
-     margin-top:6px;
-     display:grid;
-     gap:16px;
-     align-items:center;
-     justify-items:center;
-   }
-   .line{
-     max-width:760px;
-     padding:18px 26px;
-     background:linear-gradient(180deg,rgba(255,255,255,0.95),rgba(255,245,247,0.92));
-     border-radius:14px;
-     border:1px solid rgba(178,59,102,0.06);
-     box-shadow:0 6px 18px rgba(178,59,102,0.05);
-   }
-   .line .es{
-     font-size:20px;
-     color:var(--accent-dark);
-     font-weight:600;
-   }
-   .line .jp{
-     font-size:20px;
-     font-family:"Noto Sans JP",sans-serif;
-     color:#4b2b3a;
-     opacity:0.95;
-   }
-   .name{
-     font-family:"Playfair Display",serif;
-     font-size:44px;
-     color:var(--accent);
-     font-weight:700;
-     margin-bottom:6px;
-   }
-   .actions{
-     margin-top:20px;
-     display:flex;
-     gap:12px;
-     justify-content:center;
-   }
-   .btn{
-     padding:10px 20px;
-     border-radius:999px;
-     border:1px solid rgba(178,59,102,0.12);
-     background:transparent;
-     font-weight:600;
-     cursor:pointer;
-     transition:transform .18s ease, box-shadow .18s ease;
-   }
-   .btn:active{ transform:translateY(2px); }
-   .btn-yes{
-     background: linear-gradient(90deg,var(--accent) 0%,var(--accent-dark) 100%);
-     color:white;
-     box-shadow:0 8px 28px rgba(178,59,102,0.18);
-   }
-   .btn-soft{
-     color:var(--accent-dark);
-     background:transparent;
-   }
-   .note{
-     margin-top:18px;
-     color:var(--muted);
-     font-size:14px;
-   }
-   .fade-in{
-     opacity:0;
-     transform:translateY(8px);
-     animation:fadeInUp .9s ease forwards;
-   }
-   @keyframes fadeInUp{
-     to{opacity:1;transform:translateY(0);}
-   }
-   /* Hoja tipo diario */
-   .paper-note{
-     position:fixed;
-     right:40px;
-     bottom:30px;
-     width:220px;
-     min-height:160px;
-     background:#fff;
-     border-radius:6px;
-     box-shadow:0 6px 18px rgba(0,0,0,0.1);
-     padding:18px 22px;
-     font-family:'Shadows Into Light',cursive;
-     font-size:18px;
-     color:#3e3e3e;
-     line-height:1.4;
-     background-image:linear-gradient(to bottom,#fff 97%,rgba(0,0,0,0.05) 98%);
-     background-size:100% 28px;
-     border:1px solid rgba(0,0,0,0.05);
-     transform:rotate(-2deg);
-     z-index:100;
-   }
-   .paper-note::after{
-     content:"";
-     position:absolute;
-     left:14px;
-     top:0;bottom:0;
-     width:4px;
-     background:rgba(255,90,90,0.3);
-   }
-   @media (max-width:600px){
-     .paper-note{display:none;}
-   }
-   /* 🌹 Animación de rosas cayendo */
-   .roses{
-     position:fixed;
-     top:0;
-     left:0;
-     width:100%;
-     height:100%;
-     overflow:hidden;
-     pointer-events:none;
-     z-index:1;
-   }
-   .rose{
-     position:absolute;
-     font-size:24px;
-     animation:fall linear infinite;
-     opacity:0.9;
-   }
-   @keyframes fall {
-     0% { transform:translateY(-10%) rotate(0deg); opacity:1; }
-     100% { transform:translateY(110vh) rotate(360deg); opacity:0.7; }
-   }
-   /* 💞 Corazones de celebración */
-   .heart {
-     position: fixed;
-     font-size: 24px;
-     animation: floatUp 2s ease-out forwards;
-     pointer-events: none;
-     z-index: 1000;
-   }
-   @keyframes floatUp {
-     0% { transform: translateY(0) scale(1); opacity:1; }
-     100% { transform: translateY(-100vh) scale(1.6); opacity:0; }
-   }
-</style>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Tomoko's page</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&family=Noto+Sans+JP:wght@400;700&family=Shadows+Into+Light&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+
+            --bg1: #fff7f8;
+
+            --bg2: #fff0f3;
+
+            --accent: #d85b8b;
+
+            --accent-dark: #b23b66;
+
+            --muted: #6b6b6b;
+
+        }
+
+        html,
+        body {
+
+            height: 100%;
+
+            margin: 0;
+
+            font-family: "Inter", "Noto Sans JP", sans-serif;
+
+            background: radial-gradient(1200px 600px at 10% 10%, #fff7f8 0%, rgba(255, 247, 248, 0) 30%),
+
+                radial-gradient(1000px 500px at 90% 90%, #fff0f3 0%, rgba(255, 240, 243, 0) 30%),
+
+                linear-gradient(180deg, #fff 0%, #fffafc 100%);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 24px;
+
+            box-sizing: border-box;
+
+        }
+
+        .card {
+
+            position: relative;
+
+            width: 100%;
+
+            max-width: 880px;
+
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 250, 251, 0.85));
+
+            border-radius: 20px;
+
+            box-shadow: 0 20px 50px rgba(178, 59, 102, 0.12);
+
+            padding: clamp(20px, 5vw, 48px);
+
+            text-align: center;
+
+            border: 1px solid rgba(210, 90, 120, 0.08);
+
+            z-index: 5;
+
+        }
+
+        .corner {
+
+            position: absolute;
+
+            width: 180px;
+
+            height: 180px;
+
+            right: -40px;
+
+            top: -40px;
+
+            background: radial-gradient(circle at 30% 30%, rgba(216, 91, 139, 0.12), rgba(178, 59, 102, 0.04));
+
+            transform: rotate(25deg);
+
+            border-radius: 50% 40% 60% 30%;
+
+            filter: blur(14px);
+
+            pointer-events: none;
+
+        }
+
+        h1 {
+
+            margin: 0 0 8px 0;
+
+            font-family: "Playfair Display", serif;
+
+            font-weight: 700;
+
+            font-size: clamp(28px, 6vw, 48px);
+
+            color: var(--accent-dark);
+
+            line-height: 1.1;
+
+            word-wrap: break-word;
+
+        }
+
+        .sub {
+
+            margin: 0 0 28px 0;
+
+            font-size: clamp(14px, 3.5vw, 18px);
+
+            color: var(--muted);
+
+        }
+
+        .question {
+
+            margin-top: 6px;
+
+            display: grid;
+
+            gap: 16px;
+
+            align-items: center;
+
+            justify-items: center;
+
+        }
+
+        .line {
+
+            width: 100%;
+
+            max-width: 760px;
+
+            padding: clamp(12px, 3vw, 18px) clamp(16px, 4vw, 26px);
+
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(255, 245, 247, 0.92));
+
+            border-radius: 14px;
+
+            border: 1px solid rgba(178, 59, 102, 0.06);
+
+            box-shadow: 0 6px 18px rgba(178, 59, 102, 0.05);
+
+        }
+
+        .line .es,
+        .line .jp {
+
+            font-size: clamp(16px, 4.5vw, 20px);
+
+        }
+
+        .line .es {
+
+            color: var(--accent-dark);
+
+            font-weight: 600;
+
+        }
+
+        .line .jp {
+
+            font-family: "Noto Sans JP", sans-serif;
+
+            color: #4b2b3a;
+
+            opacity: 0.95;
+
+        }
+
+        .name {
+
+            font-family: "Playfair Display", serif;
+
+            font-size: clamp(28px, 6vw, 44px);
+
+            color: var(--accent);
+
+            font-weight: 700;
+
+            margin-bottom: 6px;
+
+        }
+
+        .actions {
+
+            margin-top: 20px;
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 12px;
+
+            justify-content: center;
+
+        }
+
+        .btn {
+
+            padding: 10px 20px;
+
+            border-radius: 999px;
+
+            border: 1px solid rgba(178, 59, 102, 0.12);
+
+            background: transparent;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition: transform .18s ease, box-shadow .18s ease;
+
+            font-size: clamp(14px, 3.5vw, 18px);
+
+        }
+
+        .btn:active {
+            transform: translateY(2px);
+        }
+
+        .btn-yes {
+
+            background: linear-gradient(90deg, var(--accent) 0%, var(--accent-dark) 100%);
+
+            color: white;
+
+            box-shadow: 0 8px 28px rgba(178, 59, 102, 0.18);
+
+        }
+
+        .note {
+
+            margin-top: 18px;
+
+            color: var(--muted);
+
+            font-size: clamp(12px, 3vw, 14px);
+
+        }
+
+        .fade-in {
+
+            opacity: 0;
+
+            transform: translateY(8px);
+
+            animation: fadeInUp .9s ease forwards;
+
+        }
+
+        @keyframes fadeInUp {
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+        }
+
+        /* Nota tipo diario */
+
+        .paper-note {
+
+            position: fixed;
+
+            right: 40px;
+
+            bottom: 30px;
+
+            width: 220px;
+
+            min-height: 160px;
+
+            background: #fff;
+
+            border-radius: 6px;
+
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+
+            padding: 18px 22px;
+
+            font-family: 'Shadows Into Light', cursive;
+
+            font-size: 18px;
+
+            color: #3e3e3e;
+
+            line-height: 1.4;
+
+            background-image: linear-gradient(to bottom, #fff 97%, rgba(0, 0, 0, 0.05) 98%);
+
+            background-size: 100% 28px;
+
+            border: 1px solid rgba(0, 0, 0, 0.05);
+
+            transform: rotate(-2deg);
+
+            z-index: 100;
+
+        }
+
+        .paper-note::after {
+
+            content: "";
+
+            position: absolute;
+
+            left: 14px;
+
+            top: 0;
+            bottom: 0;
+
+            width: 4px;
+
+            background: rgba(255, 90, 90, 0.3);
+
+        }
+
+        /* Animaciones y efectos */
+
+        .roses {
+
+            position: fixed;
+
+            top: 0;
+
+            left: 0;
+
+            width: 100%;
+
+            height: 100%;
+
+            overflow: hidden;
+
+            pointer-events: none;
+
+            z-index: 1;
+
+        }
+
+        .rose {
+
+            position: absolute;
+
+            font-size: 24px;
+
+            animation: fall linear infinite;
+
+            opacity: 0.9;
+
+        }
+
+        @keyframes fall {
+
+            0% {
+                transform: translateY(-10%) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(110vh) rotate(360deg);
+                opacity: 0.7;
+            }
+
+        }
+
+        .heart {
+
+            position: fixed;
+
+            font-size: 24px;
+
+            animation: floatUp 2s ease-out forwards;
+
+            pointer-events: none;
+
+            z-index: 1000;
+
+        }
+
+        @keyframes floatUp {
+
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-100vh) scale(1.6);
+                opacity: 0;
+            }
+
+        }
+
+        /* 📱 Ajustes móviles */
+
+        @media (max-width:600px) {
+
+            body {
+                padding: 16px;
+            }
+
+            .card {
+                padding: 24px;
+            }
+
+            .corner {
+                width: 120px;
+                height: 120px;
+                right: -30px;
+                top: -30px;
+            }
+
+            .paper-note {
+                display: none;
+            }
+
+        }
+    </style>
 </head>
+
 <body>
-<div class="roses" id="roses"></div>
-<div class="card">
-<div class="corner"></div>
-<h1 class="fade-in">Para <span class="name">Tomoko</span></h1>
-<div class="question">
-<div class="line fade-in" style="animation-delay:.2s">
-<div class="es">Tomoko, ¿quieres ser mi novia?</div>
-<div class="jp" style="margin-top:6px">ともこちゃん、僕の彼女になってくれませんか？</div>
-</div>
-<div class="actions fade-in" style="animation-delay:.3s">
-<button class="btn btn-yes" id="yesBtn">Sí — はい 💞</button>
-</div>
-<p class="note fade-in" style="animation-delay:.4s" id="note">
-</p>
-</div>
-</div>
-<div class="paper-note">
-   5 meses llenos de risas, cariño y momentos únicos. 
-   Cada día contigo es una aventura y no quiero que termine.
-   Contigo todo es mejor, más divertido y mágico.
-</div>
-<script>
-   // 🌹 Crear rosas cayendo
-   const rosesContainer = document.getElementById('roses');
-   function createRose() {
-     const rose = document.createElement('div');
-     rose.classList.add('rose');
-     rose.textContent = '🌹';
-     const size = 16 + Math.random()*24;
-     rose.style.fontSize = size + 'px';
-     rose.style.left = Math.random()*100 + 'vw';
-     rose.style.animationDuration = 5 + Math.random()*6 + 's';
-     rose.style.animationDelay = Math.random()*4 + 's';
-     rose.style.opacity = 0.8 + Math.random()*0.2;
-     rosesContainer.appendChild(rose);
-     setTimeout(()=>rose.remove(), 12000);
-   }
-   setInterval(createRose, 400);
-   // 💞 Celebración al decir "Sí"
-   function celebrate() {
-     const note = document.getElementById('note');
-     note.innerHTML = '🥰 ¡Sí! — もちろん!';
-     for (let i = 0; i < 30; i++) {
-       createHeart();
-     }
-   }
-   function createHeart() {
-     const heart = document.createElement('div');
-     heart.classList.add('heart');
-     heart.textContent = ['💖','💕','💞','💘'][Math.floor(Math.random()*4)];
-     heart.style.left = Math.random()*100 + 'vw';
-     heart.style.top = '80vh';
-     heart.style.fontSize = (16 + Math.random()*20) + 'px';
-     document.body.appendChild(heart);
-     setTimeout(() => heart.remove(), 2000);
-   }
-   // 💬 Botón "Un momento"
-   document.getElementById('yesBtn').addEventListener('click', celebrate);
-</script>
+    <div class="roses" id="roses"></div>
+    <div class="card">
+        <div class="corner"></div>
+        <h1 class="fade-in">Para <span class="name">Tomoko</span></h1>
+        <div class="question">
+            <div class="line fade-in" style="animation-delay:.2s">
+                <div class="es">Tomoko, ¿quieres ser mi novia?</div>
+                <div class="jp" style="margin-top:6px">ともこちゃん、僕の彼女になってくれませんか？</div>
+            </div>
+            <div class="actions fade-in" style="animation-delay:.3s">
+                <button class="btn btn-yes" id="yesBtn">Sí — はい 💞</button>
+            </div>
+            <p class="note fade-in" style="animation-delay:.4s" id="note"></p>
+        </div>
+    </div>
+    <div class="paper-note">
+
+        5 meses llenos de risas, cariño y momentos únicos.
+
+        Cada día contigo es una aventura y no quiero que termine.
+
+        Contigo todo es mejor, más divertido y mágico.
+    </div>
+    <script>
+
+        // 🌹 Crear rosas cayendo
+
+        const rosesContainer = document.getElementById('roses');
+
+        function createRose() {
+
+            const rose = document.createElement('div');
+
+            rose.classList.add('rose');
+
+            rose.textContent = '🌹';
+
+            const size = 16 + Math.random() * 24;
+
+            rose.style.fontSize = size + 'px';
+
+            rose.style.left = Math.random() * 100 + 'vw';
+
+            rose.style.animationDuration = 5 + Math.random() * 6 + 's';
+
+            rose.style.animationDelay = Math.random() * 4 + 's';
+
+            rose.style.opacity = 0.8 + Math.random() * 0.2;
+
+            rosesContainer.appendChild(rose);
+
+            setTimeout(() => rose.remove(), 12000);
+
+        }
+
+        setInterval(createRose, 400);
+
+        // 💞 Celebración al decir "Sí"
+
+        function celebrate() {
+
+            const note = document.getElementById('note');
+
+            note.innerHTML = '🥰 ¡Sí! — もちろん!';
+
+            for (let i = 0; i < 30; i++) createHeart();
+
+        }
+
+        function createHeart() {
+
+            const heart = document.createElement('div');
+
+            heart.classList.add('heart');
+
+            heart.textContent = ['💖', '💕', '💞', '💘'][Math.floor(Math.random() * 4)];
+
+            heart.style.left = Math.random() * 100 + 'vw';
+
+            heart.style.top = '80vh';
+
+            heart.style.fontSize = (16 + Math.random() * 20) + 'px';
+
+            document.body.appendChild(heart);
+
+            setTimeout(() => heart.remove(), 2000);
+
+        }
+
+        document.getElementById('yesBtn').addEventListener('click', celebrate);
+    </script>
 </body>
 
 </html>
